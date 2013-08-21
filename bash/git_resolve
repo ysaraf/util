@@ -1,0 +1,31 @@
+#!/bin/bash                                                                                                                                                                        
+
+echo "Getting all conflicts..."
+echo "----------------------------------------"
+git status -s | grep -P 'UU|AA' | cut -d" " -f2
+echo "----------------------------------------"
+
+echo
+cmd=$1
+for f in $(git status -s | grep -P 'UU|AA' | cut -d" " -f2); do
+  if [[ $cmd == "at" ]]; then
+    echo "Accepting their changes: $f"
+    git checkout --theirs -- $f
+  elif [[ $cmd == "ao" ]]; then
+    echo "Accepting our changes: $f"
+    git checkout --ours -- $f
+  else
+    echo "Manually resolving: $f"
+    emacs $f
+  fi
+
+  # check if the file was resolved                                                                                                                                                 
+  markers=$(grep -P "(<<<<|====|>>>>)" $f)
+  if [[ -n $markers ]]; then
+    echo "File [$f] doesn't seem to be resolved:"
+    echo "$markers"
+  else
+    echo "File [$f] seems to be resolved"
+  fi
+  echo
+done

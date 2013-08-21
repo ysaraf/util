@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ -z "$1" || -z "$2" ]]; then
+    echo "Generate intersection of two files by loading one in memory"
+    echo "Usage: $0 <small_file> <large_file>"
+    exit 1
+fi
+
+set -x
+export small_file=$1
+large_file=$2
+cat $large_file | perl -ne 'BEGIN { open(IN, $ENV{"small_file"}); @lines = <IN> } $line = $_; print grep(/$line/, @lines);'
+

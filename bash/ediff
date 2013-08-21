@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ -z "$1" || -z "$2" ]]; then
+    echo "Diff two files in emacs"
+    echo "Usage: $0 <file1> <file2>"
+    exit 1
+fi
+
+emacs --eval "(ediff-files \"$1\" \"$2\")"
