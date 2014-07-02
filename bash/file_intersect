@@ -9,5 +9,4 @@ fi
 set -x
 export small_file=$1
 large_file=$2
-cat $large_file | perl -ne 'BEGIN { open(IN, $ENV{"small_file"}); @lines = <IN> } $line = $_; print grep(/$line/, @lines);'
-
+cat $large_file | perl -ne 'BEGIN { open(IN, $ENV{"small_file"}); @lines = <IN> } $line = $_; print $line if (grep($_ eq $line, @lines))'
