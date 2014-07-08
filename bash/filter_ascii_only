@@ -1,0 +1,3 @@
+#!/bin/bash
+
+perl -e 'while(<>) { print if /^\p{ASCII}+$/ }'
