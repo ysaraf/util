@@ -23,7 +23,6 @@ public class PhoneticConverterTool {
 
     String filename = args[0];
     Map<String, Set<String>> encodingsToTokens = new HashMap<String, Set<String>>();
-    Map<String, String> tokenEncodings = new HashMap<String, String>();
     BufferedReader br = new BufferedReader(new FileReader(filename));
     String line;
     while ((line = br.readLine()) != null) {
@@ -49,24 +48,16 @@ public class PhoneticConverterTool {
           encodingsToTokens.put(encoding, currentTokens);
         }
         currentTokens.add(token);
-        if (!tokenEncodings.containsKey(token)) {
-          tokenEncodings.put(token, encoding);
-        }
       }
     }
     br.close();
 
-    System.out.println("Encodings -> Tokens");
     for (Map.Entry<String, Set<String>> entry : encodingsToTokens.entrySet()) {
-      if (entry.getValue().size() < 2) {
-        continue;
+      StringBuilder sb = new StringBuilder(entry.getKey());
+      for (String token : entry.getValue()) {
+        sb.append("\t").append(token);
       }
-      System.out.println(entry.getKey() + "\t" + entry.getValue());
-    }
-
-    System.out.println("\nToken -> Encoding");
-    for (Map.Entry<String, String> entry : tokenEncodings.entrySet()) {
-      System.out.println(entry.getKey() + "\t" + entry.getValue());
+      System.out.println(sb.toString());
     }
   }
 }
