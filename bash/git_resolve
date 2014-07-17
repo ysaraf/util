@@ -2,12 +2,12 @@
 
 echo "Getting all conflicts..."
 echo "----------------------------------------"
-git status -s | grep -P 'UU|AA' | cut -d" " -f2
+git status -s | egrep 'UU|AA' | cut -d" " -f2
 echo "----------------------------------------"
 
 echo
 cmd=$1
-for f in $(git status -s | grep -P 'UU|AA' | cut -d" " -f2); do
+for f in $(git status -s | egrep 'UU|AA' | cut -d" " -f2); do
   if [[ $cmd == "at" ]]; then
     echo "Accepting their changes: $f"
     git checkout --theirs -- $f
@@ -20,7 +20,7 @@ for f in $(git status -s | grep -P 'UU|AA' | cut -d" " -f2); do
   fi
 
   # check if the file was resolved                                                                                                                                                 
-  markers=$(grep -P "(<<<<|====|>>>>)" $f)
+  markers=$(egrep "(<<<<|====|>>>>)" $f)
   if [[ -n $markers ]]; then
     echo "File [$f] doesn't seem to be resolved:"
     echo "$markers"
